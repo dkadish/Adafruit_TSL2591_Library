@@ -328,6 +328,27 @@ uint32_t Adafruit_TSL2591::getFullLuminosity(void) {
 
 /************************************************************************/
 /*!
+    @brief  Reads the raw data from both light channels, without using delay.
+    @details Assumes that the sensor has been enabled and integration time has passed.
+    @returns 32-bit raw count where high word is IR, low word is IR+Visible
+*/
+/**************************************************************************/
+uint32_t Adafruit_TSL2591::getFullLuminosityManual(void)
+{
+  // CHAN0 must be read before CHAN1
+  // See: https://forums.adafruit.com/viewtopic.php?f=19&t=124176
+  uint32_t x;
+  uint16_t y;
+  y = read16(TSL2591_COMMAND_BIT | TSL2591_REGISTER_CHAN0_LOW);
+  x = read16(TSL2591_COMMAND_BIT | TSL2591_REGISTER_CHAN1_LOW);
+  x <<= 16;
+  x |= y;
+
+  return x;
+}
+
+/************************************************************************/
+/*!
     @brief  Reads the raw data from the channel
     @param  channel Can be 0 (IR+Visible, 1 (IR) or 2 (Visible only)
     @returns 16-bit raw count, or 0 if channel is invalid

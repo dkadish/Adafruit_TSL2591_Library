@@ -143,6 +143,7 @@ public:
   void setTiming(tsl2591IntegrationTime_t integration);
   uint16_t getLuminosity(uint8_t channel);
   uint32_t getFullLuminosity();
+  uint32_t getFullLuminosityManual();
 
   tsl2591IntegrationTime_t getTiming();
   tsl2591Gain_t getGain();
